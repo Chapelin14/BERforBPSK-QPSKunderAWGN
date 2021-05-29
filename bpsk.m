@@ -2,8 +2,8 @@ clear;close all;clc;
 
 N=100000;
 SNRdb=-10:2:25
-ber_BPSK=[];
 
+ber_BPSK=[];
 for i = 1: numel(SNRdb)
     bitsTX=randi([0 1],1,N);
     symbolTX=bitsTX;
@@ -18,23 +18,22 @@ for i = 1: numel(SNRdb)
     ber_BPSK=[ber_BPSK ber1];
 end
 
-symbolTX=[];
+BER=[];
+for i = 1: numel(SNRdb)
+    symbolTX=[];
 bitsTX = rand(1,N)>0.5;
-for i=1:2:N
-    if bitsTX(i)==0 && bitsTX(i+1)==0
+for k=1:2:N
+    if bitsTX(k)==0 && bitsTX(k+1)==0
         y=cosd(225)+j*sind(225);
-    elseif bitsTX(i)==0 && bitsTX(i+1)==1
+    elseif bitsTX(k)==0 && bitsTX(k+1)==1
         y=cosd(135)+j*sind(135);
-    elseif bitsTX(i)==1 && bitsTX(i+1)==0
+    elseif bitsTX(k)==1 && bitsTX(k+1)==0
         y=cosd(315)+j*sind(315);
-    elseif bitsTX(i)==1 && bitsTX(i+1)==1
+    elseif bitsTX(k)==1 && bitsTX(k+1)==1
         y=cosd(45)+j*sind(45);
     end
     symbolTX=[symbolTX y];
 end
-BER=[];
-
-for i = 1: numel(SNRdb)
     SNR=10^(SNRdb(i)/10);
     sigma=sqrt(SNR);
     noise = (randn(size(symbolTX)) + 1i*randn(size(symbolTX)))/sqrt(2);
